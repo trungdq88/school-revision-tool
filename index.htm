@@ -142,6 +142,7 @@ jQuery.extend({
 			$('#repeatDelay').val(repeatDelay);
 			console.log(sequence);
 			console.log(done);
+			$('#questionCount').text(JSONDATA.length);
 		}
 		function newSave() {
 			console.log("New save!");
@@ -283,12 +284,12 @@ jQuery.extend({
 
 <body>
 
-<div id="myspace">Good luck to me</div>
+<div id="myspace">[Tên môn học]</div>
 <br/>
 <br/>
 <br/>
 
-<div id="done" style="width:50%;height:20px;background-color:yellow" align="center">5%</div>
+<div id="done" style="width:50%;height:20px;background-color:yellow" align="center">Tổng số câu hỏi: <span id="questionCount"></span></div>
 <div style="background-color:#FFFFF1;">
 	<div id="quiz" style="width:100%; height:200px; background-color:#FFFFF1">
 		<div id="text" style="font-size:20px; ">Press Next to start</div>
