@@ -218,12 +218,15 @@ jQuery.extend({
 			//asdasd = obj;
 			$('#text').html('<pre>'+obj.question+'</pre>');
 			//$('#answer').html(obj.children[2].innerHTML.replace(/checked=\"checked\"/g,"class=\"right\""));
-			$('#answer').html(   "<li><label><input type='radio' class='"+(obj.answer=='a'?'right':'')+"' value='a'/>" + obj.a + "</label></li>"
-								+"<li><label><input type='radio' class='"+(obj.answer=='b'?'right':'')+"' value='b'/>" + obj.b + "</label></li>"
-								+"<li><label><input type='radio' class='"+(obj.answer=='c'?'right':'')+"' value='c'/>" + obj.c + "</label></li>"
-								+"<li><label><input type='radio' class='"+(obj.answer=='d'?'right':'')+"' value='d'/>" + obj.d + "</label></li>"
-								+"<li><label><input type='radio' class='"+(obj.answer=='e'?'right':'')+"' value='e'/>" + obj.e + "</label></li>"
-								+"<li><label><input type='radio' class='"+(obj.answer=='f'?'right':'')+"' value='f'/>" + obj.f + "</label></li>");
+
+			var html = "";
+			for (var i = 97; obj[String.fromCharCode(i)]; i++) {
+				var option = String.fromCharCode(i);
+				var type = obj.answer.length == 1 ? 'radio' : 'checkbox';
+				html += "<li><label><input type='"+type+"' class='"+(obj.answer.indexOf(option)>-1?'right':'')+"' value='"+option+"'/>" + obj[option] + "</label></li>"
+			}
+
+			$('#answer').html(html);
 			$('#answer input').attr('name','samename');
 			$('#answer').shuffle();
 			$('#mess').attr("class","");
