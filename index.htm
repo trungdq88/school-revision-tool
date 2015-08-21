@@ -1,326 +1,74 @@
 ﻿<html>
 <head>
-	<title>Review</title>
-	<script src="jquery-1.9.1.min.js"></script>
-	<script src="data.js"></script>
-	<style>
-	#text {
-		padding: 50px
-	}
-	</style>
-	<script>
-/**
- * converted stringify() to jQuery plugin.
- * serializes a simple object to a JSON formatted string.
- * Note: stringify() is different from jQuery.serialize() which URLEncodes form elements
- 
- * UPDATES:
- *      Added a fix to skip over Object.prototype members added by the prototype.js library
- * USAGE:
- *  jQuery.ajax({
- *	    data : {serialized_object : jQuery.stringify (JSON_Object)},
- *		success : function (data) {
- *
- *		}
- *   });
- *
- * CREDITS: http://blogs.sitepointstatic.com/examples/tech/json-serialization/json-serialization.js
- */
-jQuery.extend({	
-    stringify  : function stringify(obj) {
-        var t = typeof (obj);
-        if (t != "object" || obj === null) {
-            // simple data type
-            if (t == "string") obj = '"' + obj + '"';
-            return String(obj);
-        } else {
-            // recurse array or object
-            var n, v, json = [], arr = (obj && obj.constructor == Array);
- 
-            for (n in obj) {
-                v = obj[n];
-                t = typeof(v);
-                if (obj.hasOwnProperty(n)) {
-                    if (t == "string") v = '"' + v + '"'; else if (t == "object" && v !== null) v = jQuery.stringify(v);
-                    json.push((arr ? "" : '"' + n + '":') + String(v));
-                }
-            }
-            return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-        }
-    }
-});
-	</script>
-	<script>
-		function supports_html5_storage() {
-			try {
-				return 'localStorage' in window && window['localStorage'] !== null;
-			} catch (e) {
-				return false;
-			}
-		}
-		if (supports_html5_storage()) {
-			console.log('window.localStorage is available!');
-		} else {
-			console.log('no native support for HTML5 storage :(');
-		}
-	</script>
-	
-	<script>
-	//jQuery: Shuffle Plugin
-	(function($){
-		$.fn.shuffle = function() {
-			return this.each(function(){
-				var items = $(this).children();
-				return (items.length)
-					? $(this).html($.shuffle(items))
-					: this;
-			});
-		}
-	 
-		$.shuffle = function(arr) {
-			for(
-				var j, x, i = arr.length; i;
-				j = parseInt(Math.random() * i),
-				x = arr[--i], arr[i] = arr[j], arr[j] = x
-			);
-			return arr;
-		}
-	})(jQuery);
-	</script>
-	<script>
-		//+ Jonas Raoni Soares Silva
-		//@ http://jsfromhell.com/array/shuffle [v1.0]
-		function shuffle(o){ //v1.0
-				for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-				return o;
-		};
-	</script>
-	<script>
-		//Author: TrungDQ
-		//10:40 PM 15 April 2013
-		var data;
-		var sequence;
-		var repeatDelay = 10;
-		var repeatTimes = 3;
-		var done = new Array();
-		var dbCheck = "saved3";
-		$(document).ready(function() {
-			data = JSONDATA;
-			var sData = localStorage["i2se_saved"];
-			if (sData != dbCheck) {		
-				refreshSequence();
-				refreshDone();
-				newSave();
-			} else {
-				sequence = JSON.parse(localStorage["i2se_sequence"]);
-				repeatDelay = parseInt(localStorage["i2se_repeatDelay"]);
-				repeatTimes = parseInt(localStorage["i2se_repeatTimes"]);
-				done = JSON.parse(localStorage["i2se_done"]);
-				if (parseInt(localStorage["i2se_isCheck"]) == 1) {
-					$('#checkint').attr("checked", "checked");
-				}
+    <title>Review</title>
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="data.js"></script>
+    <script src="jquery-extend.js"></script>
+    <script src="html5-storage.js"></script>
 
-				loadSave();
-			}
-			
-		});
-		function saveStatus() {
-			localStorage["i2se_saved"] = dbCheck;
-			localStorage["i2se_sequence"] = JSON.stringify(sequence);
-			localStorage["i2se_repeatDelay"] = repeatDelay;
-			localStorage["i2se_repeatTimes"] = repeatTimes;
-			localStorage["i2se_done"] = JSON.stringify(done);
-			if ($('#checkint').is(":checked")) {
-				localStorage["i2se_isCheck"] = 1;
-			} else {
-				localStorage["i2se_isCheck"] = 0;
-			}
-		}
-		function loadSave() {
-			console.log("Loaded save!");
-			$('#repeatTimes').val(repeatTimes);
-			$('#repeatDelay').val(repeatDelay);
-			console.log(sequence);
-			console.log(done);
-			$('#questionCount').text(JSONDATA.length);
-		}
-		function newSave() {
-			console.log("New save!");
-		}
-		function refreshSequence() {
-			sequence = new Array();
-			for (i = 0; i < data.length; ++i) {
-				sequence[i] = i;
-			}
-			sequence = shuffle(sequence);
-		}
-		function refreshDone() {
-			for (i = 0; i < data.length; ++i) {
-				done[i] = 0;
-			}
-		}
-		function rand(start, end) {
-			return Math.floor((Math.random()*end)+start);
-		}
-		function selectquestion() {
-			if (sequence.length == 0) {
-				refreshSequence();
-			}
-			return sequence.pop();
-		}
-		function logDb(code) {
-			if ($('#checkint').is(':checked') == true) {
-				for (i = 0; i < repeatTimes; ++i) {
-					sequence.splice(sequence.length - repeatDelay*(i + 1), 0, code);
-				}
-				
-			}
-		}
-		function viewanswer() {
-			var ans = $('.right');
-			ans.each(function() {
-				$(this).parent().css('background-color','red');
-			});
-		}
-		function checkanswer() {
-			var ans = $('.right');
-			var ok = true;
-			ans.each(function() {
-				if ($(this).is(':checked') == false) {
-					ok = false;
-				};
-			});
-			$('#answer input[type=checkbox]').each(function() {
-				var obj = $(this);
-				if (!obj.hasClass('right')) {
-					if (obj.is(':checked') == true) {
-						ok = false;
-					};
-				}
-			});
-			if (ok) {
-				$('#mess').attr("class","qtrue");
-			} else {
-				$('#mess').attr("class","qfalse");
-				if ($('#nextbutton').is(':disabled') == true) {
-					logDb(parseInt($('#quescode').html()));//TODO
-				}
-			}
-			done[$('#quescode').html()] += 1;
+    <script src="jquery-suffle.js"></script>
+    <script src="suffle.js"></script>
+    <script src="main.js"></script>
+    <script src="utils.js"></script>
+    <link href="font-awesome.css" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet"/>
 
-
-			$('#nextbutton').removeAttr("disabled");
-		}
-		var asdasd;
-		function nextquestion() {
-			var nextid = selectquestion();
-			$('#quescode').html(nextid);
-			var obj = data[nextid];
-			//asdasd = obj;
-			$('#text').html('<pre>'+obj.question+'</pre>');
-			//$('#answer').html(obj.children[2].innerHTML.replace(/checked=\"checked\"/g,"class=\"right\""));
-
-			var html = "";
-			for (var i = 97; obj[String.fromCharCode(i)]; i++) {
-				var option = String.fromCharCode(i);
-				var type = obj.answer.length == 1 ? 'radio' : 'checkbox';
-				html += "<li><label><input type='"+type+"' class='"+(obj.answer.indexOf(option)>-1?'right':'')+"' value='"+option+"'/>" + obj[option] + "</label></li>"
-			}
-
-			$('#answer').html(html);
-			$('#answer input').attr('name','samename');
-			$('#answer').shuffle();
-			$('#mess').attr("class","");
-			$('#nextbutton').attr("disabled","disabled");
-			saveStatus();
-			calcPercent();
-		}
-		function calcPercent() {
-			var c = 0;
-			for (i = 0; i < data.length; ++i) {
-				if (done[i] > 0) ++c;
-			}
-			var p = (c * 100 / data.length).toFixed(2);
-			var pString = Math.round(c * 100 / data.length);
-			
-			$('#done').css('width', pString + "%");
-			$('#done').html(p + "%");
-		}
-		function btnOK() {
-			repeatDelay = parseInt($('#repeatDelay').val());
-			repeatTimes = parseInt($('#repeatTimes').val());
-			$('#btnOK').attr('disabled','disabled');
-		}
-		function textChange(obj) {
-			if ($(obj).val() == "") $(obj).val('0')
-			$('#btnOK').removeAttr("disabled");
-		}
-	</script>
-   <SCRIPT>
-       <!--
-       function isNumberKey(evt)
-       {
-          var charCode = (evt.which) ? evt.which : event.keyCode;
-          if (charCode != 46 && charCode > 31 
-            && (charCode < 48 || charCode > 57))
-             return false;
-
-          return true;
-       }
-       //-->
-    </SCRIPT>
-	<style>
-	.qtrue {
-	background-color:#66CC33;
-	}
-	.qfalse {
-	background-color:#B00000 ;
-	}
-	pre {
-	word-wrap: break-word;
-	}
-	</style>
 </head>
 
 <body>
+<div id="header">
+    <div id="myspace">
+        [Subject name]
+        <div class="pull-right">
+            <input class="button" type="button" value="Setting" id="setting" onclick="$('#panel-setting').show()"/>
+        </div>
+    </div>
 
-<div id="myspace">[Tên môn học]</div>
-<br/>
-<br/>
-<br/>
-
-<div id="done" style="width:50%;height:20px;background-color:yellow" align="center">Tổng số câu hỏi: <span id="questionCount"></span></div>
-<div style="background-color:#FFFFF1;">
-	<div id="quiz" style="width:100%; height:200px; background-color:#FFFFF1">
-		<div id="text" style="font-size:20px; ">Press Next to start</div>
-	</div>
-	<div id="quescode">0</div>
-	<div style="width:100%;background-color:#FFFFF1;" align="center">
-		<div id="answer" style="width:800px; height:200px; display:inline-block; text-align:left">
-			<ul>
-				<li>View: xem đáp án</li>
-				<li>Check: kiểm tra đáp án đúng/sai</li>
-				<li>Next: next!</li>
-				
-			</ul>
-		</div>
-		<p>
-			<input id="checkint" type="checkbox"/>
-			<label for="checkint">
-			Lặp lại các câu trả lời sai.
-			</label>
-			---- Số lần lặp lại: <input id="repeatTimes" type="text" value="3" style="width:20px" onKeyUp="textChange(this)" onkeypress="return isNumberKey(event)"/> ---- Khoảng cách: <input id="repeatDelay" type="text" value="10" style="width:20px" onKeyUp="textChange(this)"  onkeypress="return isNumberKey(event)"/>
-			<input id="btnOK" type="button" value="OK"  style="width:40px" onclick="btnOK()" disabled="disabled"/>
-		</p>
-		<p>
-		<input type="button" onclick="viewanswer()" value="View"/>
-			<input id="checkbutton" type="button" onclick="checkanswer()" value="Check" style="font-size:30px"/>
-			<input id="nextbutton" type="button" onclick="nextquestion()" value="Next" style="font-size:30px"/>			
-		</p>
-		<div id="mess" class="" style="width:100%;height:50px;font-size:40px;text-align:center;color:white">
-		
-		</div>
-	</div>
+    <div id="done" style="width:100%;" align="center">
+        Total questions:
+        <span id="questionCount"></span>
+    </div>
 </div>
+<div id="body">
+    <div id="quiz" style="width:100%; height:200px; background-color:#FFFFF1">
+        <div id="text">Press Next to start</div>
+    </div>
+    <div id="quescode">0</div>
+    <div id="answer" style="height:200px; display:inline-block; text-align:left">
+        <ul>
+            <li>View: xem đáp án</li>
+            <li>Check: kiểm tra đáp án đúng/sai</li>
+            <li>Next: next!</li>
 
-<div>
+        </ul>
+    </div>
+</div>
+<div id="footer">
+    <div id="mess">
+
+    </div>
+    <div>
+        <input class="button" id="viewbutton" type="button" onclick="viewanswer()" value="View"/>
+        <input class="button" id="checkbutton" type="button" onclick="checkanswer()" value="Check"/>
+        <input class="button" id="nextbutton" type="button" onclick="nextquestion()" value="Next"/>
+    </div>
+</div>
+<div id="panel-setting" style="display: none;">
+    <input id="checkint" type="checkbox"/>
+    <label for="checkint">
+        Lặp lại các câu trả lời sai.
+    </label>
+    <br/>
+    <br/>
+    Số lần lặp lại: <input class="input-text" id="repeatTimes" type="text" value="3" />
+    <br/>
+    <br/>
+    Khoảng cách: <input class="input-text" id="repeatDelay" type="text" value="10" />
+    <br/>
+    <br/>
+    <div style="text-align: center">
+        <input id="btnOK" type="button" value="OK" class="button" onclick="btnOK()"/>
+    </div>
+</div>
+</body>
+</html>
