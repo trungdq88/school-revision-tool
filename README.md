@@ -1,1 +1,1 @@
-A tool I wrote 2 years ago (2012) to do revision before school exam.
+A tool I wrote to do self-review before school exam.
