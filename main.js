@@ -168,10 +168,12 @@ function btnOK() {
 
 function btnReset() {
     if (confirm("Are you sure?")) {
+        var questionPack = localStorage['i2se_question_pack_url'];
         var keys = Object.keys(localStorage);
         for (var i = 0; i < keys.length; i++) {
             delete localStorage[keys[i]];
         }
+        localStorage['i2se_question_pack_url'] = questionPack;
         location.reload();
     }
 }
