@@ -18,7 +18,7 @@
 <body>
 <div id="header">
     <div id="myspace">
-        [Subject name]
+        <span id="pack-name"></span>
         <div class="pull-right">
             <input class="button" type="button" value="Setting" id="setting" onclick="$('#panel-setting').show()"/>
         </div>
@@ -30,17 +30,22 @@
     </div>
 </div>
 <div id="body">
-    <div id="quiz" style="width:100%; height:200px; background-color:#FFFFF1">
-        <div id="text">Press Next to start</div>
+    <div id="quiz" style="width:100%; background-color:#FFFFF1">
+        <div id="text">
+            Press Next to start
+
+            <ul>
+                <li><b>View</b>: Show correct answer(s)</li>
+                <li><b>Check</b>: Check your answer is correct or not</li>
+                <li><b>Next</b>: Move to next question</li>
+                <li><b>Setting</b>: Repeat failed questions, import questions</li>
+            </ul>
+        </div>
     </div>
     <div id="quescode">0</div>
-    <div id="answer" style="height:200px; display:inline-block; text-align:left">
-        <ul>
-            <li>View: xem đáp án</li>
-            <li>Check: kiểm tra đáp án đúng/sai</li>
-            <li>Next: next!</li>
-
-        </ul>
+    <div style="padding: 10px">
+        <table id="answer">
+        </table>
     </div>
 </div>
 <div id="footer">
@@ -56,19 +61,38 @@
 <div id="panel-setting" style="display: none;">
     <input id="checkint" type="checkbox"/>
     <label for="checkint">
-        Lặp lại các câu trả lời sai.
+        Repeat failed questions
     </label>
     <br/>
     <br/>
-    Số lần lặp lại: <input class="input-text" id="repeatTimes" type="text" value="3" />
+    Repeat times: <input class="input-text" id="repeatTimes" type="number" value="3"/>
     <br/>
     <br/>
-    Khoảng cách: <input class="input-text" id="repeatDelay" type="text" value="10" />
+    Repeat distance: <input class="input-text" id="repeatDelay" type="number" value="10"/>
     <br/>
     <br/>
+
     <div style="text-align: center">
         <input id="btnOK" type="button" value="OK" class="button" onclick="btnOK()"/>
     </div>
+    <br/>
+    <br/>
+    <hr/>
+    <div>
+        <input style="margin-right: 10px" id="btnImport" type="button" value="Import" class="button" onclick="btnImport()"/>
+
+        <p>Import new question database. (Current question data will be erased!)</p>
+        <p>See <a href="data/luat-giao-thong.json" target="_blank">question database example</a></p>
+    </div>
+    <br/>
+    <hr/>
+    <div>
+        <input style="margin-right: 10px" id="btnReset" type="button" value="Reset stack" class="button" onclick="btnReset()"/>
+
+        <p>This button will reset all status of your answered questions, you have to start the process from the
+            beginning. Question data is still remained.</p>
+    </div>
+
 </div>
 </body>
 </html>

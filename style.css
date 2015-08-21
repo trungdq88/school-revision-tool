@@ -8,7 +8,7 @@ body {
 }
 
 .qfalse {
-    background-color: #B00000;
+    background-color: #F11515;
 }
 
 pre {
@@ -25,7 +25,7 @@ pre {
     line-height: 25px;
 }
 #myspace {
-    padding: 3px;
+    padding: 3px 3px 3px 10px;
     height: 31px;
     line-height: 31px;
     background-color: #A5FFDE;
@@ -104,16 +104,31 @@ pre {
     bottom: 0;
     background-color: #B9EAC2;
     padding: 20px;
+    overflow: auto;
 }
 
 .input-text {
     padding: 5px;
     font-size: 20px;
-    width: 50px;
+    width: 80px;
     margin-left: 20px;
 }
 #btnOK {
     background-color: #45A0F5;
     display: inline-block;
     float: none;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+table td {
+    border: solid 2px #ccc;
+    padding: 5px;
+}
+#btnReset {
+    background-color: red;
+}
+#btnImport {
+    background-color: #3969C7;
 }

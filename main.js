@@ -7,7 +7,7 @@ var repeatTimes = 3;
 var done = new Array();
 var dbCheck = "saved3";
 $(document).ready(function () {
-    data = JSONDATA;
+    data = JSONDATA.questions;
     var sData = localStorage["i2se_saved"];
     if (sData != dbCheck) {
         refreshSequence();
@@ -24,7 +24,9 @@ $(document).ready(function () {
 
         loadSave();
     }
+    $('#pack-name').text(JSONDATA.name);
 
+    $('#questionCount').text(JSONDATA.questions.length);
 });
 function saveStatus() {
     localStorage["i2se_saved"] = dbCheck;
@@ -44,7 +46,6 @@ function loadSave() {
     $('#repeatDelay').val(repeatDelay);
     console.log(sequence);
     console.log(done);
-    $('#questionCount').text(JSONDATA.length);
 }
 function newSave() {
     console.log("New save!");
@@ -81,7 +82,7 @@ function logDb(code) {
 function viewanswer() {
     var ans = $('.right');
     ans.each(function () {
-        $(this).parent().css('background-color', 'red');
+        $(this).parent().css('background-color', '#8DFB7A');
     });
 }
 function checkanswer() {
@@ -127,7 +128,7 @@ function nextquestion() {
     for (var i = 97; obj[String.fromCharCode(i)]; i++) {
         var option = String.fromCharCode(i);
         var type = obj.answer.length == 1 ? 'radio' : 'checkbox';
-        html += "<li><label><input type='" + type + "' class='" + (obj.answer.indexOf(option) > -1 ? 'right' : '') + "' value='" + option + "'/>" + obj[option] + "</label></li>"
+        html += "<tr><td><label><input type='" + type + "' class='" + (obj.answer.indexOf(option) > -1 ? 'right' : '') + "' value='" + option + "'/>" + obj[option] + "</label></td></tr>"
     }
 
     $('#answer').html(html);
@@ -150,9 +151,45 @@ function calcPercent() {
     $('#done').html(p + "%");
 }
 function btnOK() {
-    repeatDelay = parseInt($('#repeatDelay').val());
-    repeatTimes = parseInt($('#repeatTimes').val());
+    if (!(repeatTimes = parseInt($('#repeatTimes').val()))) {
+        repeatTimes = 3;
+    }
+    if (!(repeatDelay = parseInt($('#repeatDelay').val()))) {
+        repeatDelay = 10;
+    }
+
+    $('#repeatTimes').val(repeatTimes);
+    $('#repeatDelay').val(repeatDelay);
+
     saveStatus();
     $('#panel-setting').hide();
+
+}
+
+function btnReset() {
+    if (confirm("Are you sure?")) {
+        var keys = Object.keys(localStorage);
+        for (var i = 0; i < keys.length; i++) {
+            delete localStorage[keys[i]];
+        }
+        location.reload();
+    }
+}
+
+function btnImport() {
+
+    var url = prompt("Please import question database URL", "data/luat-giao-thong.json");
+    $.ajax({
+        url: url,
+        async: false,
+        dataType: 'json',
+        success: function (response) {
+            localStorage['i2se_question_pack_url'] = url;
+            location.reload();
+        },
+        error: function (response) {
+            alert('Your question database is not exists or not correctly formatted!');
+        }
+    });
 
 }
