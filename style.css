@@ -132,3 +132,6 @@ table td {
 #btnImport {
     background-color: #3969C7;
 }
+.button:disabled {
+    background-color: #ccc !important;
+}

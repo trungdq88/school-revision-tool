@@ -122,6 +122,12 @@ function nextquestion() {
     var obj = data[nextid];
 
     $('#text').html('<pre>' + obj.question + '</pre>');
+    if (obj.image) {
+        $('image').show();
+        $('#image').attr('src', obj.image);
+    } else {
+        $('image').hide();
+    }
     //$('#answer').html(obj.children[2].innerHTML.replace(/checked=\"checked\"/g,"class=\"right\""));
 
     var html = "";
@@ -180,18 +186,20 @@ function btnReset() {
 
 function btnImport() {
 
-    var url = prompt("Please import question database URL", "data/luat-giao-thong.json");
-    $.ajax({
-        url: url,
-        async: false,
-        dataType: 'json',
-        success: function (response) {
-            localStorage['i2se_question_pack_url'] = url;
-            location.reload();
-        },
-        error: function (response) {
-            alert('Your question database is not exists or not correctly formatted!');
-        }
-    });
+    var url = prompt("Please import question database URL", localStorage['i2se_question_pack_url']);
+    if (url) {
+        $.ajax({
+            url: url,
+            async: false,
+            dataType: 'json',
+            success: function (response) {
+                localStorage['i2se_question_pack_url'] = url;
+                location.reload();
+            },
+            error: function (response) {
+                alert('Your question database is not exists or not correctly formatted!');
+            }
+        });
+    }
 
 }
