@@ -123,10 +123,10 @@ function nextquestion() {
 
     $('#text').html('<pre>' + obj.question + '</pre>');
     if (obj.image) {
-        $('image').show();
+        $('#image').show();
         $('#image').attr('src', obj.image);
     } else {
-        $('image').hide();
+        $('#image').hide();
     }
     //$('#answer').html(obj.children[2].innerHTML.replace(/checked=\"checked\"/g,"class=\"right\""));
 
