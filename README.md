@@ -6,6 +6,7 @@ A tool I wrote to do self-review before school exam.
 http://trungdq88.github.io/school-revision-tool/
 
 <img src="screenshot.png" width="350px"/>
+<img src="setting.png" width="350px"/>
 
 # What it does?
 
@@ -13,6 +14,9 @@ http://trungdq88.github.io/school-revision-tool/
 - Check your answer
 - If you answer it wrong, the question will repeat (somewhere later) until you get it right!
 
+# Development
+
+This tool is written long time ago, back then I was beginner at web development and I totally have no idea about frameworks, or build tools. So it just the `index.html`, open it and edit in your will.
 
 # How to add your own question bank
 
