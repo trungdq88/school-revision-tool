@@ -37,6 +37,8 @@ pre {
 #text pre {
     margin: 0;
     padding: 0;
+    white-space: normal;
+    word-break: break-all;
 }
 #footer {
     position: fixed;
